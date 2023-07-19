@@ -12,6 +12,11 @@ async function main() {
   } else {
     console.log(`Deploying to ${hre.network.name}`.cyan);
   }
+
+  const provider = new hre.ethers.JsonRpcProvider(hre.network.config.url);
+  const maxFeePerGas = await (await provider.getFeeData()).maxFeePerGas;
+  console.log(`maxFeePerGas: ${maxFeePerGas.toString()}`.green);
+
   const Token = await hre.ethers.getContractFactory("SquidwardTentaclesToken", deployer);
   const token = await Token.deploy();
   await token.waitForDeployment();
